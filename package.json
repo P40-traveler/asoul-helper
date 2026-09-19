@@ -2,7 +2,7 @@
   "name": "asoul-helper",
   "displayName": "A-SOUL小助手-动态与直播提醒",
   "description": "在 VS Code 中接收自定义 B 站用户的动态和直播提醒。",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "P40-traveler",
   "icon": "images/icon.png",
   "license": "MIT",
@@ -64,6 +64,13 @@
           "minimum": 1,
           "maximum": 60,
           "description": "轮询间隔（分钟）。间隔过短可能触发 B 站风控。"
+        },
+        "asoulNotifier.dynamicMaxAgeMinutes": {
+          "type": "number",
+          "default": 30,
+          "minimum": 1,
+          "maximum": 1440,
+          "description": "只提醒发布时间距当前时间不超过该时长的动态（分钟）。"
         },
         "asoulNotifier.breakReminder.enabled": {
           "type": "boolean",

@@ -27,6 +27,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       if (
         event.affectsConfiguration("asoulNotifier.enabled")
         || event.affectsConfiguration("asoulNotifier.pollIntervalMinutes")
+        || event.affectsConfiguration("asoulNotifier.dynamicMaxAgeMinutes")
       ) {
         monitor.reschedule();
       }

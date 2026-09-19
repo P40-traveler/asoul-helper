@@ -62,6 +62,7 @@
 
 - `asoulNotifier.enabled`：启用或暂停自动监控。
 - `asoulNotifier.pollIntervalMinutes`：轮询间隔，默认 2 分钟，最短 1 分钟。
+- `asoulNotifier.dynamicMaxAgeMinutes`：动态发布时间限制，默认只提醒最近 30 分钟内发布的动态。
 - `asoulNotifier.breakReminder.enabled`：启用连续编码休息提醒。
 - `asoulNotifier.breakReminder.intervalMinutes`：连续编码多久后提醒，默认 60 分钟。
 - `asoulNotifier.breakReminder.idleResetMinutes`：超过多久没有编辑后重新计时，默认 5 分钟。

@@ -4,12 +4,13 @@ import type { Member } from "./types";
 export const MEMBER_FILE_NAME = "member.json";
 
 const DEFAULT_MEMBERS: Member[] = [
-  { uid: 672346917, name: "向晚", dynamic: true, live: true },
   { uid: 672353429, name: "贝拉", dynamic: true, live: true },
   { uid: 672328094, name: "嘉然", dynamic: true, live: true },
   { uid: 672342685, name: "乃琳", dynamic: true, live: true },
   { uid: 703007996, name: "A-SOUL_Official", dynamic: true, live: true }
 ];
+
+const LEGACY_DEFAULT_UIDS = [672346917, 672353429, 672328094, 672342685, 703007996];
 
 export class MemberStore {
   readonly uri: vscode.Uri;
@@ -22,6 +23,7 @@ export class MemberStore {
     await vscode.workspace.fs.createDirectory(this.context.globalStorageUri);
     try {
       await vscode.workspace.fs.stat(this.uri);
+      await this.migrateLegacyDefault();
     } catch {
       const content = JSON.stringify(DEFAULT_MEMBERS, null, 2) + "\n";
       await vscode.workspace.fs.writeFile(this.uri, Buffer.from(content, "utf8"));
@@ -78,6 +80,23 @@ export class MemberStore {
         live: item.live !== false
       };
     });
+  }
+
+  private async migrateLegacyDefault(): Promise<void> {
+    try {
+      const bytes = await vscode.workspace.fs.readFile(this.uri);
+      const value: unknown = JSON.parse(Buffer.from(bytes).toString("utf8"));
+      if (!Array.isArray(value) || value.length !== LEGACY_DEFAULT_UIDS.length) return;
+
+      const uids = value.map(item => isRecord(item) ? Number(item.uid ?? item.bilibiliId) : NaN);
+      const isUntouchedLegacyDefault = uids.every((uid, index) => uid === LEGACY_DEFAULT_UIDS[index]);
+      if (!isUntouchedLegacyDefault) return;
+
+      const content = JSON.stringify(DEFAULT_MEMBERS, null, 2) + "\n";
+      await vscode.workspace.fs.writeFile(this.uri, Buffer.from(content, "utf8"));
+    } catch {
+      // Invalid custom files are left intact so load() can report a useful error.
+    }
   }
 }
 

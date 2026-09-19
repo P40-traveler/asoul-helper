@@ -118,6 +118,7 @@ export class Monitor implements vscode.Disposable {
     // notification so returning to VS Code can never cause a notification storm.
     newItems = newItems
       .filter(item => previousTimestamp === undefined || item.publishedAt === undefined || item.publishedAt >= previousTimestamp)
+      .filter(item => isRecentDynamic(item.publishedAt, this.dynamicMaxAgeMinutes()))
       .sort((left, right) => (right.publishedAt ?? 0) - (left.publishedAt ?? 0));
 
     const latest = newItems[0];
@@ -174,6 +175,11 @@ export class Monitor implements vscode.Disposable {
     return Math.max(1, Math.min(60, Number(value) || 2));
   }
 
+  private dynamicMaxAgeMinutes(): number {
+    const value = vscode.workspace.getConfiguration("asoulNotifier").get("dynamicMaxAgeMinutes", 30);
+    return Math.max(1, Math.min(1440, Number(value) || 30));
+  }
+
   private log(message: string, error = true): void {
     const line = `[${new Date().toLocaleString()}] ${message}`;
     error ? this.output.appendLine(`ERROR ${line}`) : this.output.appendLine(line);
@@ -195,4 +201,14 @@ function itemsBeforeKnownMarker<T extends { id: string }>(items: T[], oldIds: st
   // If the saved marker has fallen out of the feed, resynchronize silently.
   // Treating the full page as new is what caused historical notification floods.
   return markerIndex < 0 ? [] : items.slice(0, markerIndex);
+}
+
+function isRecentDynamic(publishedAt: number | undefined, maxAgeMinutes: number): boolean {
+  // Missing or invalid timestamps are suppressed rather than risking an old
+  // notification. Bilibili's pub_ts value is expressed in Unix seconds.
+  if (typeof publishedAt !== "number" || !Number.isFinite(publishedAt) || publishedAt <= 0) {
+    return false;
+  }
+  const ageSeconds = Math.floor(Date.now() / 1000) - publishedAt;
+  return ageSeconds >= -300 && ageSeconds < maxAgeMinutes * 60;
 }
