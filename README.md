@@ -1,5 +1,17 @@
 <h1 align="center">A-SOUL小助手-动态与直播提醒</h1>
 
+<p align="center">
+  <a href="https://github.com/P40-traveler/asoul-helper/stargazers" style="text-decoration:none">
+    <img src="https://img.shields.io/github/stars/P40-traveler/asoul-helper.svg" alt="GitHub stars" />
+  </a>
+  <a href="https://github.com/P40-traveler/asoul-helper/forks" style="text-decoration:none">
+    <img src="https://img.shields.io/github/forks/P40-traveler/asoul-helper.svg" alt="GitHub forks" />
+  </a>
+  <a href="https://github.com/P40-traveler/asoul-helper/blob/main/LICENSE" style="text-decoration:none">
+    <img src="https://img.shields.io/badge/License-MIT-flat.svg" alt="GitHub license" />
+  </a>
+</p>
+
 一个A-SOUL成员动态/直播提醒插件，在A-SOUL成员嘉然、乃琳、贝拉发布新动态或开始直播时，扩展会显示消息提醒，并可直接打开对应动态或直播间。连续写代码达到设定时长（默认1h）后，A-SOUL成员也会提醒你休息哦~
 
 实现自定义用户查询，可以编辑`member.json`文件设置想要查询的B站用户。
