@@ -12,11 +12,20 @@
   </a>
 </p>
 
+> [!IMPORTANT]
+> 扩展目前暂时无法从 VS Code Marketplace 下载，可从 [GitHub Releases](https://github.com/P40-traveler/asoul-helper/releases/latest) 下载最新版 `.vsix` 安装包。
+
+下载后，在 VS Code 扩展视图右上角选择 `···` → `从 VSIX 安装...`，选中安装包即可；也可以运行：
+
+```bash
+code --install-extension asoul-helper-0.2.2.vsix
+```
+
 一个A-SOUL成员动态/直播提醒插件，在A-SOUL成员嘉然、乃琳、贝拉发布新动态或开始直播时，扩展会显示消息提醒，并可直接打开对应动态或直播间。连续写代码达到设定时长（默认1h）后，A-SOUL成员也会提醒你休息哦~
 
 实现自定义用户查询，可以编辑`member.json`文件设置想要查询的B站用户。
 
-使用轮询方式检测B站动态和直播，所以可能会有短暂的延迟（小于2min）。
+使用轮询方式检测B站动态和直播，所以可能会有短暂的延迟。
 
 ## 插件使用与自定义
 
